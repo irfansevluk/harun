@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Doğum Günün Kutlu Olsun!</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #1a1a2e;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    h1 {
+      font-size: 50px;
+      margin-bottom: 20px;
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff4e50, 0 0 20px #ff4e50; }
+      to   { text-shadow: 0 0 20px #f9d423, 0 0 30px #f9d423; }
+    }
+    #photo {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #fff;
+      margin-bottom: 20px;
+    }
+    #clickMe {
+      padding: 10px 20px;
+      background-color: #ff4e50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      outline: none;
+    }
+    #lights {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body onclick="celebrate()">
+  <!-- Fotoğraf buraya gelecek -->
+  <img id="photo" src="harun.jpg" alt="Doğum günün kutlu olsun">
+  
+  <!-- İsim kısmı -->
+  <h1>🎉 Doğum Günün Kutlu Olsun, Harun Abici 🎂</h1>
+  
+  <button id="clickMe">Tıkla ve Kutlamayı Başlat!</button>
+  
+  <div id="lights"></div>
+  
+  <!-- Müzik -->
+  <audio id="bgMusic" src="harun-abi.mp3" autoplay loop></audio>
+  
+  <script>
+    function celebrate() {
+      // müziği başlat
+      const music = document.getElementById('bgMusic');
+      if (music) music.play();
+      
+      // konfeti efekti
+      const duration = 5 * 1000;
+      const end = Date.now() + duration;
+      (function frame() {
+        confetti({
+          particleCount: 7,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 7,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
+
+      // ışık/parlaklık efekti (basit bir flash)
+      const lights = document.getElementById('lights');
+      let flash = true;
+      const flashInterval = setInterval(() => {
+        lights.style.background = flash ? 'rgba(255,255,255,0.3)' : 'transparent';
+        flash = !flash;
+      }, 200);
+      setTimeout(() => {
+        clearInterval(flashInterval);
+        lights.style.background = 'transparent';
+      }, duration);
+    }
+  </script>
+</body>
+</html>
